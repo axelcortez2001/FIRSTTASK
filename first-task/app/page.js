@@ -1,6 +1,7 @@
 import { getData } from "@/utils/api";
 import CreateTask from "./components/CreateTask";
 import Filter from "./components/Filter";
+
 import TodoCard from "./components/TodoCard";
 
 export default async function Home() {
