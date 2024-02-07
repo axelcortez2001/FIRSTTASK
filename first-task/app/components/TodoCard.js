@@ -1,5 +1,5 @@
 "use client";
-import { delData } from "@/utils/api";
+import { delData, editData } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { CiCalendarDate } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
@@ -7,6 +7,7 @@ import EditTask from "./EditTask";
 
 const TodoCard = ({ todo }) => {
   const router = useRouter();
+
   const handleDelete = async (id) => {
     try {
       await delData(id);
@@ -15,14 +16,25 @@ const TodoCard = ({ todo }) => {
       console.log(error);
     }
   };
-  // const handleFinish = async (id) => {
-  //   try {
-  //     await finishTask(id);
-  //     router.refresh();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+
+  const handleFinish = async (id) => {
+    try {
+      await editData(id, { new_status: "Finished" });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      router.refresh();
+    }
+  };
+  function formatDate(dateString) {
+    const options = { month: "long", day: "numeric", year: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  }
+
   return (
     <div className='card w-auto bg-primary text-primary-content'>
       <div className='card-body'>
@@ -30,11 +42,20 @@ const TodoCard = ({ todo }) => {
         <p>{todo.description}</p>
         <p className='flex items-center'>
           <CiCalendarDate />
-          {todo.createdAt}
+          {formatDate(todo.createdAt)}
         </p>
         <div className='flex flex-row space-x-2 justify-between'>
           <div className='card-actions justify-end'>
-            <button className='btn btn-outline btn-info'>Finish</button>
+            {todo.stat === "Pending" ? (
+              <button
+                className='btn btn-outline btn-info'
+                onClick={() => handleFinish(todo._id.toString())}
+              >
+                Finish
+              </button>
+            ) : (
+              <div className='border border-blue-600 rounded-md p-3'>Done!</div>
+            )}
           </div>
           <div className='w-full flex justify-end space-x-1'>
             <div className='card-actions justify-end'>
@@ -43,7 +64,7 @@ const TodoCard = ({ todo }) => {
             <div className='card-actions justify-end'>
               <button
                 onClick={() => handleDelete(todo._id.toString())}
-                className='btn btn-outline btn-error'
+                className='btn btn-outline btn-error p-1'
               >
                 <MdDeleteOutline size={20} />
               </button>

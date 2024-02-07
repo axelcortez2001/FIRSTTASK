@@ -3,7 +3,7 @@ import Axios from "axios";
 
 export const getData = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/routes", {
+    const res = await fetch(`http://localhost:3000/api/routes`, {
       cache: "no-store",
     });
     if (!res.ok) {
@@ -63,7 +63,6 @@ export const editData = async (id, todo) => {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     const updated_data = await res.json();
-    console.log(updated_data);
     return updated_data;
   } catch (error) {
     console.error(error);

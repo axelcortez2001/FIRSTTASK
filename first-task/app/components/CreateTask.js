@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
 import AddModal from "./AddModal";
-import { addData } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { addData } from "@/utils/api";
 
 const CreateTask = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const date_today = new Date().toLocaleString();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-  const status = "Pending";
+  const stat = "Pending";
   const router = useRouter();
 
   const modalHandler = () => {
@@ -19,7 +19,7 @@ const CreateTask = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const check_status = await addData({ title, description, status });
+      const check_status = await addData({ title, description, stat });
       if (check_status.message === "ToDo Created") {
         setDescription("");
         setTitle("");

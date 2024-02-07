@@ -6,9 +6,9 @@ const toDoSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       auto: true,
     },
-    title: String,
-    description: String,
-    status: String,
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    stat: { type: String, required: true },
   },
   { timestamps: true }
 );

@@ -2,14 +2,15 @@
 import { useState } from "react";
 import AddModal from "./AddModal";
 import { CiEdit } from "react-icons/ci";
-
 import { useRouter } from "next/navigation";
+import { editData } from "@/utils/api";
 
 const EditTask = ({ todo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const date_today = new Date().toLocaleString();
   const [new_title, setNewTitle] = useState(todo.title);
   const [new_description, setNewDescription] = useState(todo.description);
+  const [status] = "Finished";
   const [id, setTid] = useState(todo._id);
   const router = useRouter();
 
@@ -18,16 +19,8 @@ const EditTask = ({ todo }) => {
   };
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    console.log(title);
     try {
-      const res = await fetch(`http://localhost:3000/api/routes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ new_title, new_description }),
-      });
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
+      await editData(id, { new_title, new_description });
     } catch (error) {
       console.error(error);
     } finally {
@@ -35,10 +28,11 @@ const EditTask = ({ todo }) => {
       modalHandler();
     }
   };
+
   return (
     <div>
       <button
-        className='btn btn-outline btn-error'
+        className='btn btn-outline btn-info p-2'
         onClick={() => modalHandler()}
       >
         <CiEdit size={20} />
