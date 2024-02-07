@@ -1,6 +1,7 @@
 // utils/api.js
 import Axios from "axios";
 
+
 export const getData = async () => {
   try {
     const res = await fetch("http://localhost:3000/api/routes", {
