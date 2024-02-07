@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
-const Filter = () => {
+const Filter = ({ onFilterChange }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const handleFilterToggle = () => {
     setIsFilterOpen(!isFilterOpen);
+  };
+
+  const handleFilterChange = (filter) => {
+    onFilterChange(filter);
   };
   return (
     <div className='dropdown dropdown-bottom'>
@@ -22,13 +27,13 @@ const Filter = () => {
           className='dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52'
         >
           <li>
-            <a>All</a>
+            <a onClick={() => handleFilterChange("All")}>All</a>
           </li>
           <li>
-            <a>Finished</a>
+            <a onClick={() => handleFilterChange("Finished")}>Finished</a>
           </li>
           <li>
-            <a>Finished</a>
+            <a onClick={() => handleFilterChange("Pending")}>Finished</a>
           </li>
         </ul>
       )}
