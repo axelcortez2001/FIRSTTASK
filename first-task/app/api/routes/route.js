@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { title, description, date, status } = await request.json();
+    const { title, description, status } = await request.json();
     await connectDB();
-    await toDoDB.create({ title, description, date, status });
+    await toDoDB.create({ title, description, status });
     return NextResponse.json({ message: "ToDo Created" }, { status: 201 });
   } catch (error) {
     console.error(error);
