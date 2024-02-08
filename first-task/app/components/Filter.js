@@ -4,12 +4,15 @@ import { useState } from "react";
 const Filter = ({ onFilterChange }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  //toggle open-close filter
   const handleFilterToggle = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+  //pass the filter string to homepage
   const handleFilterChange = (filter) => {
     onFilterChange(filter);
+    setIsFilterOpen(!isFilterOpen);
   };
   return (
     <div className='dropdown dropdown-bottom'>
@@ -33,7 +36,7 @@ const Filter = ({ onFilterChange }) => {
             <a onClick={() => handleFilterChange("Finished")}>Finished</a>
           </li>
           <li>
-            <a onClick={() => handleFilterChange("Pending")}>Finished</a>
+            <a onClick={() => handleFilterChange("Pending")}>Pending</a>
           </li>
         </ul>
       )}

@@ -2,29 +2,37 @@
 import { useState } from "react";
 import AddModal from "./AddModal";
 import { CiEdit } from "react-icons/ci";
-import { useRouter } from "next/navigation";
 import { editData } from "@/utils/api";
 
-const EditTask = ({ todo }) => {
+const EditTask = ({ refreshData, todo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const date_today = new Date().toLocaleString();
   const [new_title, setNewTitle] = useState(todo.title);
   const [new_description, setNewDescription] = useState(todo.description);
-  const [status] = "Finished";
   const [id, setTid] = useState(todo._id);
-  const router = useRouter();
 
+  //handler to open modal
   const modalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  //handler updating todo data
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!title) {
+        alert("Please input title");
+        return;
+      }
+      if (!description) {
+        alert("Please input description");
+        return;
+      }
       await editData(id, { new_title, new_description });
     } catch (error) {
       console.error(error);
     } finally {
-      router.refresh();
+      refreshData();
       modalHandler();
     }
   };
@@ -51,6 +59,7 @@ const EditTask = ({ todo }) => {
                 type='text'
                 placeholder='Input Title'
                 className='input input-bordered input-info w-full max-w-full text-gray-950'
+                required
               />
               <textarea
                 type='text'
@@ -58,6 +67,7 @@ const EditTask = ({ todo }) => {
                 onChange={(e) => setNewDescription(e.target.value)}
                 placeholder='Input Description'
                 className='textarea textarea-bordered textarea-info w-full max-w-full text-gray-950'
+                required
               />
             </div>
             <div className='flex justify-end mt-2'>

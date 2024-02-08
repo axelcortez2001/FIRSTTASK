@@ -4,7 +4,7 @@ import AddModal from "./AddModal";
 import { useRouter } from "next/navigation";
 import { addData } from "@/utils/api";
 
-const CreateTask = () => {
+const CreateTask = ({ refreshData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const date_today = new Date().toLocaleString();
   const [title, setTitle] = useState();
@@ -12,13 +12,23 @@ const CreateTask = () => {
   const stat = "Pending";
   const router = useRouter();
 
+  //handler to open/close modal
   const modalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  //handler to add a todo data
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!title) {
+        alert("Please input title");
+        return;
+      }
+      if (!description) {
+        alert("Please input description");
+        return;
+      }
       const check_status = await addData({ title, description, stat });
       if (check_status.message === "ToDo Created") {
         setDescription("");
@@ -30,7 +40,7 @@ const CreateTask = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      router.refresh();
+      refreshData();
     }
   };
 
